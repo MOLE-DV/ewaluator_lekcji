@@ -5,7 +5,7 @@ import { generateRandomString } from "@/app/tools/generateRandomString";
 import { randomUUID } from "crypto";
 import { cookies } from "next/headers";
 
-export async function POST(req: NextRequest, res: NextResponse) {
+export async function POST(req: NextRequest) {
   try {
     await connectToDatabase();
     const { questions } = await req.json();

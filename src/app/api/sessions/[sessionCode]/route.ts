@@ -4,7 +4,7 @@ import SessionModel from "../../../../../models/SessionsModel";
 import { cookies } from "next/headers";
 export async function GET(
   req: NextRequest,
-  { params }: { params: { sessionCode: string } }
+  { params }: { params: Promise<{ sessionCode: string }> }
 ) {
   try {
     await connectToDatabase();

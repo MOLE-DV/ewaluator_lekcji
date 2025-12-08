@@ -4,7 +4,7 @@ import SessionModel from "../../../../../../models/SessionsModel";
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: { sessionCode: string } }
+   { params }: { params: Promise<{ sessionCode: string }> }
 ) {
   try {
     await connectToDatabase();

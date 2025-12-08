@@ -5,7 +5,7 @@ import mongoose from "mongoose";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { _sessionId: string } }
+  { params }: { params: Promise<{ _sessionId: string }> }
 ) {
   try {
     await connectToDatabase();
