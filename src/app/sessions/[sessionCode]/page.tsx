@@ -5,12 +5,16 @@ import { useEffect, useState } from "react";
 import Button from "@/app/components/Button";
 import axios from "axios";
 import { SessionType } from "@/app/api/sessions/[sessionCode]/route";
+import SmileIcon from "@/app/components/Smile";
+import ConfusedIcon from "@/app/components/Confused";
+import SadIcon from "@/app/components/Sad";
 
 export default function SessionLobby() {
   const pagePath = usePathname();
   const [isHost, setIsHost] = useState(false);
   const [sessionData, setSessionData] = useState<SessionType | null>(null);
   const [question, setQuestion] = useState({ questionId: 0, text: "" });
+  const [numberOfAnswers, setNumberOfAnswers] = useState(0);
   const router = useRouter();
   useEffect(() => {
     const checkSession = async () => {
@@ -67,9 +71,68 @@ export default function SessionLobby() {
     });
   };
 
+  const updateNumberOfAnswers = async () => {
+    if (!sessionData || !sessionData._id) return;
+    const res = await axios.get(`/api/getAllAnswers/${sessionData._id}`);
+    if (!res) return;
+    setNumberOfAnswers(res.data.answers.length);
+  };
+
+  const startSession = async () => {
+    if (!sessionData || !sessionData.sessionCode) return;
+    const res = await axios.post(
+      `/api/sessions/${sessionData.sessionCode}/start`
+    );
+    if (!res || res.status !== 201) return;
+    window.location.reload();
+  };
+
+  const endSession = async () => {
+    if (!sessionData || !sessionData.sessionCode) return;
+    const res = await axios.post(
+      `/api/sessions/${sessionData.sessionCode}/end`
+    );
+    if (!res || res.status !== 201) return;
+    router.push(`/sessions/${sessionData.sessionCode}/results`);
+  };
+
   if (isHost) {
     return (
-      <h1 className="text-purple-700 text-4xl font-bold">Jesteś hostem</h1>
+      <>
+        {sessionData && !sessionData.started && (
+          <>
+            <h2 className="text-purple-500 text-2xl md:text-3xl">
+              Kod twojej sesji to
+            </h2>
+            <h1 className="text-purple-500 text-2xl md:text-4xl font-bold">
+              {sessionData?.sessionCode}
+            </h1>
+          </>
+        )}
+        {sessionData && sessionData.started && (
+          <>
+            <h1 className="text-purple-500 text-2xl md:text-3xl font-bold">
+              Sesja trwa...
+            </h1>
+            <h2 className="text-purple-500 text-2xl md:text-3xl font-bold my-3">
+              Aktualna liczba odpowiedzi: {numberOfAnswers}
+            </h2>
+          </>
+        )}
+
+        <div className="flex flex-row gap-3 my-5">
+          {sessionData && !sessionData.started && (
+            <Button text="Rozpocznij sesje" onClick={startSession} />
+          )}
+          {sessionData && sessionData.started && (
+            <Button
+              text="Odświerz liczbe odpowiedzi"
+              onClick={updateNumberOfAnswers}
+            />
+          )}
+          <Button text="Zakończ sesje" onClick={endSession} />
+        </div>
+      </>
     );
   } else if (
     sessionData &&
@@ -79,18 +142,20 @@ export default function SessionLobby() {
   ) {
     return (
       <>
-        <h1 className="text-purple-700 text-4xl font-bold">{question.text}</h1>
+        <h1 className="text-purple-500 text-3xl md:text-4xl font-bold">
+          {question.text}
+        </h1>
         <div className="flex gap-3 my-5">
           <Button
-            text="Tak"
+            icon={<SmileIcon className="w-full h-full" />}
             onClick={() => questionAnswerButtonClickHanlder("yes")}
           />
           <Button
-            text="Może"
+            icon={<ConfusedIcon className="w-full h-full" />}
             onClick={() => questionAnswerButtonClickHanlder("maybe")}
           />
           <Button
-            text="Nie"
+            icon={<SadIcon className="w-full h-full" />}
             onClick={() => questionAnswerButtonClickHanlder("no")}
           />
         </div>
@@ -99,7 +164,7 @@ export default function SessionLobby() {
   } else if (sessionData && !sessionData.ended) {
     return (
       <>
-        <h1 className="text-purple-700 text-4xl font-bold">
+        <h1 className="text-purple-500 text-2xl md:text-4xl font-bold">
           Oczekiwanie na rozpoczęcie sesji...
         </h1>
         <div className="flex gap-3 my-5">

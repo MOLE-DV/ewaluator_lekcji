@@ -43,7 +43,7 @@ export default function Input({
         }
       }}
       onChange={onChange}
-      className={`border border-purple-700 rounded-full p-3 px-5 w-100 outline-none placeholder: text-purple-600 ${className}`}
+      className={`border border-purple-500 rounded-full p-3 px-5 w-100 outline-none placeholder: text-purple-600 ${className} bg-white`}
       minLength={minLength}
       maxLength={maxLength}
       required={required}

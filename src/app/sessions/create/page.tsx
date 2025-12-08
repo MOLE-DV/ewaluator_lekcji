@@ -1,8 +1,10 @@
 "use client";
 
 import Button from "@/app/components/Button";
+import CustomLink from "@/app/components/CustomLink";
 import Input from "@/app/Input";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
 
 const QuestionCreatorBox = ({
@@ -47,6 +49,7 @@ const QuestionCreatorBox = ({
 
 export default function CreateSession() {
   const [questions, setQuestions] = useState<string[]>([""]);
+  const router = useRouter();
   const addQuestionButtonClickHandler = () => {
     setQuestions((prev) => [...prev, ""]);
   };
@@ -77,13 +80,20 @@ export default function CreateSession() {
   };
 
   const onFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     const res = await axios.post("/api/sessions/create", { questions });
+    if (res) {
+      const sessionData = res.data.newSession;
+      router.push(`/sessions/${sessionData.sessionCode}`);
+    }
   };
   return (
     <>
-      <h1 className="text-purple-700 text-4xl font-bold">Utwórz nową sesje</h1>
+      <h1 className="text-purple-500 text-2xl md:text-4xl font-bold">
+        Utwórz nową sesje
+      </h1>
       <form
-        className="w-1/3 p-3 border-purple-700 border-2 rounded-2xl flex flex-col text-purple-700 gap-3 min-h-3/4 box-border scroll-auto"
+        className="w-full md:w-1/2 h-fit my-3 p-3  flex flex-col text-purple-500 gap-3  box-border scroll-auto border-purple-500 md:border-2 rounded-2xl"
         onSubmit={onFormSubmit}
       >
         {questions.map((question, i) => (
@@ -101,8 +111,9 @@ export default function CreateSession() {
             }
           />
         ))}
-        <div className="">
+        <div className="flex justify-between p-3">
           <Button text="Utwórz " className="" type="submit" />
+          <CustomLink text="Powrót " className="" href="/" />
         </div>
       </form>
     </>

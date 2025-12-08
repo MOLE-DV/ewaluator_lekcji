@@ -31,10 +31,7 @@ export async function POST(req: NextRequest, res: NextResponse) {
 
     await newSession.save();
     (await cookies()).set("session_creator_token", creatorToken);
-    return NextResponse.json(
-      { message: "Successfully created session" },
-      { status: 201 }
-    );
+    return NextResponse.json({ newSession }, { status: 201 });
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });
   }

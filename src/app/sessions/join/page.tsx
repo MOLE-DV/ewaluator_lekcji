@@ -15,11 +15,11 @@ export default function JoinPage() {
     router.push(`/sessions/${sessionId}`);
   };
   return (
-    <form className="flex flex-col gap-5" onSubmit={onSubmit}>
-      <h1 className="text-purple-700 text-4xl font-bold">
+    <form className="flex flex-col gap-5 w-full md:w-fit" onSubmit={onSubmit}>
+      <h1 className="text-purple-500 text-2xl md:text-4xl font-bold">
         Wpisz kod sesji do której chcesz dołączyć
       </h1>
-      <div className="flex gap-3">
+      <div className="flex gap-3 flex-wrap">
         <Input
           type="text"
           placeholder="Kod sesji..."

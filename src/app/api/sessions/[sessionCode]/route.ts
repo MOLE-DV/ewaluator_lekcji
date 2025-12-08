@@ -10,14 +10,17 @@ export async function GET(
     await connectToDatabase();
     const { sessionCode } = await params;
     const session = await SessionModel.findOne({ sessionCode });
-    const cookie = (await cookies()).get("session_creator_token");
-    const creatorToken = cookie?.value ?? null;
+    let isHost = false;
+    if (session) {
+      const cookie = (await cookies()).get("session_creator_token");
+      const creatorToken = cookie?.value ?? null;
 
-    const isHost = Boolean(
-      creatorToken &&
-        session.creatorToken &&
-        creatorToken === session.creatorToken
-    );
+      isHost = Boolean(
+        creatorToken &&
+          session.creatorToken &&
+          creatorToken === session.creatorToken
+      );
+    }
     return NextResponse.json({
       session,
       isHost,
@@ -38,4 +41,6 @@ export type SessionType = {
   started: boolean;
   ended: boolean;
   creatorToken: string;
+  createdAt: Date;
+  updatedAt: Date;
 };

@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+@keyframes fill {
+  0% {
+    width: 0%;
+  }
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -19,8 +25,14 @@
   }
 }
 
+@font-face {
+  font-family: Swanesa;
+  src: url("../fonts/swansea-font/Swansea-q3pd.ttf");
+}
+
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: Swanesa, Arial, Helvetica, sans-serif;
+  letter-spacing: 2px;
 }
