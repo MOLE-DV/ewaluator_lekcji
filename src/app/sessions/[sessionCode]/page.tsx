@@ -145,17 +145,23 @@ export default function SessionLobby() {
         <h1 className="text-purple-500 text-3xl md:text-4xl font-bold">
           {question.text}
         </h1>
-        <div className="flex gap-3 my-5">
+        <div className="flex gap-15 my-10">
           <Button
             icon={<SmileIcon className="w-full h-full" />}
+            className="bg-green-500 w-15 h-15 rounded-full text-white"
+            disableDefaultStyling
             onClick={() => questionAnswerButtonClickHanlder("yes")}
           />
           <Button
             icon={<ConfusedIcon className="w-full h-full" />}
+            className="bg-orange-500 rounded-full text-white"
+            disableDefaultStyling
             onClick={() => questionAnswerButtonClickHanlder("maybe")}
           />
           <Button
             icon={<SadIcon className="w-full h-full" />}
+            className="bg-red-500 rounded-full text-white"
+            disableDefaultStyling
             onClick={() => questionAnswerButtonClickHanlder("no")}
           />
         </div>

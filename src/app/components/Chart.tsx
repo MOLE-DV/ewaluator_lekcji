@@ -26,10 +26,12 @@ export default function Chart({
         {data &&
           data.map((dataObj, i) => (
             <div
-              className={`h-full bg-purple-500 rounded-2xl animate-[fill_1s_ease-out_forwards]`}
+              className={`h-full bg-purple-500 rounded-2xl animate-[fill_1s_ease-out_forwards] text-white flex items-center justify-end pr-5`}
               key={i}
               style={{ width: `${(dataObj.value / maxValue) * 100}%` }}
-            />
+            >
+              {((dataObj.value / maxValue) * 100).toFixed(1)}%
+            </div>
           ))}
       </div>
     </div>

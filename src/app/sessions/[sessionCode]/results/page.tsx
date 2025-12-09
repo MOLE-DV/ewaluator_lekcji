@@ -50,7 +50,11 @@ export default function SessionResults() {
 
   const countAnswers = (answers: AnswerType[], questionIndex: number) => {
     if (!answers || answers.length === 0) return;
-
+    const order = [
+      <SmileIcon className="w-full h-full bg-green-500 text-white rounded-full" />,
+      <ConfusedIcon className="w-full h-full bg-orange-500 text-white rounded-full" />,
+      <SadIcon className="w-full h-full bg-red-500 text-white rounded-full" />,
+    ];
     const answerValues = answers
       .filter((a: AnswerType) => a.questionIndex === questionIndex)
       .map((answerObject: AnswerType) => answerObject.answer) as string[];
@@ -58,15 +62,19 @@ export default function SessionResults() {
       const num = answerValues.filter((a: string) => a === answer).length;
       const icon =
         answer === "yes" ? (
-          <SmileIcon className="w-full h-full" />
+          <SmileIcon className="w-full h-full bg-green-500 text-white rounded-full" />
         ) : answer === "maybe" ? (
-          <ConfusedIcon className="w-full h-full" />
+          <ConfusedIcon className="w-full h-full bg-orange-500 text-white rounded-full" />
         ) : (
-          <SadIcon className="w-full h-full" />
+          <SadIcon className="w-full h-full bg-red-500 text-white rounded-full" />
         );
       return { icon, value: num };
     });
-    setCountedAnswers(answersCounted.reverse());
+    setCountedAnswers(
+      answersCounted.sort(
+        (a, b) => order.indexOf(a.icon) - order.indexOf(b.icon)
+      )
+    );
   };
 
   const nextQuestion = () => {
@@ -105,11 +113,7 @@ export default function SessionResults() {
             )}
         </nav>
         <Chart data={countedAnswers} className="w-full" />
-        <CustomLink
-          href="/"
-          text="Powrót do strony głownej"
-          className="w-fit"
-        />
+        <CustomLink href="/" text="Strona głowna" className="w-fit" />
       </div>
     );
   } else {
@@ -120,7 +124,7 @@ export default function SessionResults() {
         </h1>
         <div id="buttons-container" className="flex my-5 gap-8">
           <Button onClick={() => window.location.reload()} text="Odświerz" />
-          <CustomLink href="/" text="Powrót do strony głownej" />
+          <CustomLink href="/" text="Strona główna" />
         </div>
       </>
     );
