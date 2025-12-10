@@ -1,7 +1,7 @@
 const chars = [
   [..."abcdefghijklmnopqrstuvwxyz"],
   [..."0123456789"],
-  [..."@#$%*-"],
+  [..."#$*-"],
 ];
 
 export const generateRandomString = (length: number) => {

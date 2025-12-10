@@ -8,6 +8,7 @@ import { SessionType } from "@/app/api/sessions/[sessionCode]/route";
 import SmileIcon from "@/app/components/Smile";
 import ConfusedIcon from "@/app/components/Confused";
 import SadIcon from "@/app/components/Sad";
+import QRCode from "react-qr-code";
 
 export default function SessionLobby() {
   const pagePath = usePathname();
@@ -107,6 +108,11 @@ export default function SessionLobby() {
             <h1 className="text-purple-500 text-2xl md:text-4xl font-bold">
               {sessionData?.sessionCode}
             </h1>
+            <QRCode
+              value={document.URL}
+              fgColor="oklch(62.7% 0.265 303.9)"
+              className="mt-3 rounded-2xl"
+            />
           </>
         )}
         {sessionData && sessionData.started && (
@@ -145,22 +151,22 @@ export default function SessionLobby() {
         <h1 className="text-purple-500 text-3xl md:text-4xl font-bold">
           {question.text}
         </h1>
-        <div className="flex gap-15 my-10">
+        <div className="flex w-full sm:w-fit justify-between my-10 sm:gap-10">
           <Button
             icon={<SmileIcon className="w-full h-full" />}
-            className="bg-green-500 w-15 h-15 rounded-full text-white"
+            className="bg-green-500 w-15 aspect-square rounded-full text-white"
             disableDefaultStyling
             onClick={() => questionAnswerButtonClickHanlder("yes")}
           />
           <Button
             icon={<ConfusedIcon className="w-full h-full" />}
-            className="bg-orange-500 rounded-full text-white"
+            className="bg-orange-500 w-15 aspect-square rounded-full text-white"
             disableDefaultStyling
             onClick={() => questionAnswerButtonClickHanlder("maybe")}
           />
           <Button
             icon={<SadIcon className="w-full h-full" />}
-            className="bg-red-500 rounded-full text-white"
+            className="bg-red-500 w-15 aspect-square rounded-full text-white"
             disableDefaultStyling
             onClick={() => questionAnswerButtonClickHanlder("no")}
           />
