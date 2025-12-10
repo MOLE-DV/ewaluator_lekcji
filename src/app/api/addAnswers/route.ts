@@ -6,9 +6,8 @@ import connectToDatabase from "../../../../lib/mongoose";
 export async function POST(req: NextRequest) {
   try {
     await connectToDatabase();
-    const { answer, questionIndex, sessionId } = await req.json();
-
-    if (!sessionId || typeof questionIndex !== "number" || !answer) {
+    const { answers, sessionId } = await req.json();
+    if (!sessionId || !answers || answers.length === 0) {
       return NextResponse.json(
         { error: "Invalid request data" },
         { status: 400 }
@@ -17,14 +16,14 @@ export async function POST(req: NextRequest) {
     if (!mongoose.Types.ObjectId.isValid(sessionId)) {
       throw new Error("Invalid sessionId format");
     }
-    const newAnswer = new AnswerModel({
+
+    const answersArray = (answers as string[]).map((answer, i) => ({
       _sessionId: new mongoose.Types.ObjectId(sessionId),
-      questionIndex,
+      questionIndex: i,
       answer,
-    });
-
-    await newAnswer.save();
-
+    }));
+    console.log(answersArray);
+    await AnswerModel.insertMany(answersArray);
     return NextResponse.json({ success: true }, { status: 201 });
   } catch (error) {
     return NextResponse.json({ error }, { status: 500 });

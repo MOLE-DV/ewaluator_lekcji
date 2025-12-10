@@ -1,8 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Button from "./components/Button";
 import InfoCircleIcon from "./components/InfoCircle";
 import CustomLink from "./components/CustomLink";
+import { AppContainer } from "./components/AppContainer";
+import { LoadingScreenProvider } from "./contexts/LoadingScreenContext";
 
 export const metadata: Metadata = {
   title: "Ewaluator lekcji",
@@ -17,7 +18,9 @@ export default function RootLayout({
   return (
     <html lang="pl" className="overflow-x-hidden w-dvw">
       <body className="flex flex-col justify-center items-center h-screen p-3 overflow-x-hidden w-dvw drop-shadow-md">
-        {children}
+        <LoadingScreenProvider>
+          <AppContainer>{children}</AppContainer>
+        </LoadingScreenProvider>
         <CustomLink
           icon={<InfoCircleIcon />}
           href="/about"

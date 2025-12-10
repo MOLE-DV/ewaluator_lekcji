@@ -7,6 +7,7 @@ import ConfusedIcon from "@/app/components/Confused";
 import CustomLink from "@/app/components/CustomLink";
 import SadIcon from "@/app/components/Sad";
 import SmileIcon from "@/app/components/Smile";
+import { useLoadingScreen } from "@/app/contexts/LoadingScreenContext";
 import axios from "axios";
 import { usePathname, useRouter } from "next/navigation";
 import { ReactElement, Suspense, useEffect, useState } from "react";
@@ -21,12 +22,15 @@ export default function SessionResults() {
   const sessionCode = pathname.split("/").at(-2);
   const [sessionData, setSessionData] = useState<SessionType>();
   const router = useRouter();
+  const { setLoading } = useLoadingScreen();
   useEffect(() => {
     if (!sessionCode) return;
 
     const checkSession = async () => {
+      setLoading(true);
       const res = await axios.get(`/api/sessions/${sessionCode}`);
       const data = await res.data;
+      setLoading(false);
 
       if (!data.session || res.status !== 200) {
         alert("Nie znaleziono sesji o podanym kodzie.");
