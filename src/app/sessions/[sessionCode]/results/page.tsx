@@ -123,7 +123,7 @@ export default function SessionResults() {
           Oczekiwanie na zakończenie sesji...
         </h1>
         <div id="buttons-container" className="flex my-5 gap-8">
-          <Button onClick={() => window.location.reload()} text="Odświerz" />
+          <Button onClick={() => window.location.reload()} text="Odśwież" />
           <CustomLink href="/" text="Strona główna" />
         </div>
       </>

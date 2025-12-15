@@ -126,7 +126,7 @@ export default function SessionLobby() {
           )}
           {sessionData && sessionData.started && (
             <Button
-              text="Odświerz liczbe odpowiedzi"
+              text="Odśwież liczbe odpowiedzi"
               onClick={updateNumberOfAnswers}
             />
           )}
@@ -174,7 +174,7 @@ export default function SessionLobby() {
           Oczekiwanie na rozpoczęcie sesji...
         </h1>
         <div className="flex gap-3 my-5">
-          <Button onClick={() => window.location.reload()} text="Odświerz" />
+          <Button onClick={() => window.location.reload()} text="Odśwież" />
           <CustomLink href="/" text="Powrót" />
         </div>
       </>
