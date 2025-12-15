@@ -117,7 +117,7 @@ export default function SessionResults() {
             )}
         </nav>
         <Chart data={countedAnswers} className="w-full" />
-        <CustomLink href="/" text="Strona głowna" className="w-fit" />
+        <CustomLink href="/" text="Strona główna" className="w-fit" />
       </div>
     );
   } else {
