@@ -2,6 +2,7 @@
 
 import Button from "@/app/components/Button";
 import CustomLink from "@/app/components/CustomLink";
+import { useLoadingScreen } from "@/app/contexts/LoadingScreenContext";
 import Input from "@/app/Input";
 import axios from "axios";
 import { useRouter } from "next/navigation";
@@ -50,6 +51,7 @@ const QuestionCreatorBox = ({
 export default function CreateSession() {
   const [questions, setQuestions] = useState<string[]>([""]);
   const router = useRouter();
+  const { setLoading } = useLoadingScreen();
   const addQuestionButtonClickHandler = () => {
     setQuestions((prev) => [...prev, ""]);
   };
@@ -81,7 +83,9 @@ export default function CreateSession() {
 
   const onFormSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setLoading(true);
     const res = await axios.post("/api/sessions/create", { questions });
+    setLoading(false);
     if (res) {
       const sessionData = res.data.newSession;
       router.push(`/sessions/${sessionData.sessionCode}`);
